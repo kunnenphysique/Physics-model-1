@@ -1,0 +1,144 @@
+Voici un site simple en HTML/CSS/JavaScript qui affiche toutes vos conversations avec une IA (stockées dans le `localStorage` du navigateur). Vous pouvez l'héberger gratuitement sur **GitHub Pages**.  
+
+---
+
+### **1. Fichier HTML (`index.html`)**  
+Copiez ce code dans un fichier `index.html` :  
+
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historique des conversations IA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        #chat-container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .user-message {
+            background-color: #e3f2fd;
+            text-align: right;
+        }
+        .ai-message {
+            background-color: #f1f1f1;
+            text-align: left;
+        }
+        #clear-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 15px;
+            background: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #clear-btn:hover {
+            background: #cc0000;
+        }
+    </style>
+</head>
+<body>
+    <h1>Mes conversations avec l'IA</h1>
+    <div id="chat-container"></div>
+    <button id="clear-btn">Effacer l'historique</button>
+
+    <script>
+        // Charger les messages depuis le localStorage
+        function loadMessages() {
+            const chatContainer = document.getElementById('chat-container');
+            const messages = JSON.parse(localStorage.getItem('ia_conversations') || '[]');
+            
+            chatContainer.innerHTML = '';
+            
+            messages.forEach(msg => {
+                const userDiv = document.createElement('div');
+                userDiv.className = 'message user-message';
+                userDiv.textContent = `Vous: ${msg.user}`;
+                chatContainer.appendChild(userDiv);
+                
+                const aiDiv = document.createElement('div');
+                aiDiv.className = 'message ai-message';
+                aiDiv.textContent = `IA: ${msg.ai}`;
+                chatContainer.appendChild(aiDiv);
+            });
+        }
+
+        // Effacer l'historique
+        document.getElementById('clear-btn').addEventListener('click', () => {
+            localStorage.removeItem('ia_conversations');
+            loadMessages(); // Rafraîchir l'affichage
+        });
+
+        // Charger au démarrage
+        loadMessages();
+    </script>
+</body>
+</html>
+```
+
+---
+
+### **2. Comment l'utiliser ?**  
+1. **Enregistrer les conversations** :  
+   - Ce site lit les conversations stockées dans le `localStorage` sous la clé `ia_conversations`.  
+   - Pour que ça fonctionne, vous devez enregistrer vos conversations au format :  
+     ```javascript
+     // Exemple d'enregistrement d'une conversation
+     const conversations = JSON.parse(localStorage.getItem('ia_conversations') || '[]');
+     conversations.push({ user: "Votre message", ai: "Réponse de l'IA" });
+     localStorage.setItem('ia_conversations', JSON.stringify(conversations));
+     ```
+   - *(Si vous utilisez une extension ou un script pour sauvegarder automatiquement vos discussions avec l'IA, vous pouvez adapter ce code.)*  
+
+2. **Tester localement** :  
+   - Ouvrez le fichier `index.html` dans un navigateur.  
+   - Si vous avez déjà des conversations enregistrées, elles s'afficheront.  
+
+---
+
+### **3. Publier sur GitHub Pages (gratuit)**  
+1. **Créez un compte GitHub** ([github.com](https://github.com)).  
+2. **Créez un nouveau dépôt** (→ "New Repository").  
+3. **Téléversez `index.html`** :  
+   - Glissez-déposez le fichier dans votre dépôt.  
+4. **Activez GitHub Pages** :  
+   - Allez dans `Settings` → `Pages` → Sélectionnez `main` (ou `master`) comme branche.  
+5. **Votre site est en ligne !**  
+   - L'URL sera : `https://[votre-username].github.io/[nom-du-dépôt]/`  
+
+---
+
+### **Exemple de résultat**  
+![Exemple de site](https://via.placeholder.com/800x500/cccccc/333333?text=Capture+d'écran+du+site) *(Visuel simplifié)*  
+
+🔹 **Avantages** :  
+- **Gratuit** (hébergé sur GitHub).  
+- **Pas besoin de base de données** (les conversations sont stockées dans le navigateur).  
+- **Simple et modifiable**.  
+
+⚠️ **Limites** :  
+- Les conversations ne sont sauvegardées que sur **votre appareil** (car elles utilisent `localStorage`).  
+- Pour un stockage multi-appareils, il faudrait utiliser une base de données (ex. Firebase).  
+
+**Vous voulez une version plus évoluée (avec sauvegarde en ligne) ?** Dites-le-moi ! 😊
